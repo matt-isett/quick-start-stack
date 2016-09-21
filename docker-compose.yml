@@ -13,16 +13,16 @@ services:
 
   metricbeat:
     build: 
-      context: metricbeat
+      context: docker-metricbeat
       args:
         ELASTICSEARCH_VERSION: "${ELASTICSEARCH_VERSION}"
-    hostname: MySQL_Server_1
+    hostname: My_Metric_Server_1
     links:
       - elasticsearch
 
   load-data:
     build: 
-      context: metricbeat
+      context: docker-metricbeat
       args:
         ELASTICSEARCH_VERSION: "${ELASTICSEARCH_VERSION}"
     environment:
