@@ -8,7 +8,7 @@ This project uses submodules; use **git clone --recursive**
 		
 # Usage
 
-	make initial-run
+	make add-data
 		Wait for about one minute, looking for a log like: quickstartstack_dashboard_1 exited with code 0
 		Then Ctrl-C to stop in the terminal, or docker-compose stop
 	make quick-start-stack
