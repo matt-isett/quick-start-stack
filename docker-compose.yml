@@ -13,7 +13,7 @@ services:
 
   metricbeat:
     build: 
-      context: docker-metricbeat
+      context: metricbeat
       args:
         ELASTICSEARCH_VERSION: "${ELASTICSEARCH_VERSION}"
     hostname: MySQL_Server_1
@@ -22,7 +22,7 @@ services:
 
   load-data:
     build: 
-      context: docker-metricbeat
+      context: metricbeat
       args:
         ELASTICSEARCH_VERSION: "${ELASTICSEARCH_VERSION}"
     environment:
