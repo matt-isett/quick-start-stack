@@ -1,0 +1,76 @@
+{ 
+     "metadata" : { 
+        "color" : "red"
+     },
+     "trigger": {   "schedule": {  "interval": "1m" } },
+     "input": {
+            "search": {
+              "request": {
+                "search_type": "query_then_fetch",
+                "indices": ["metricbeat-*"],
+               "body": { 
+                  "size": 0,
+                  "query": {
+                    "bool": {
+                      "must": [
+                        {
+                          "range": {
+                            "@timestamp": {
+                              "gte": "now-1m"
+                            }
+                          }
+                        }
+                    ]
+                }
+             },
+             "aggs": { 
+               "host": {
+                "terms": {
+                  "field": "beat.hostname"
+                  } ,
+                  "aggs": {
+                    "max_cpu_used": {
+                      "max": {
+                        "field": "system.cpu.user.pct"
+                      }
+                    }
+                  }
+                 }
+  
+              }  
+                  
+                }
+              }
+            }
+          },
+      "condition": {
+           "array_compare": {
+            "ctx.payload.aggregations.host.buckets" : {
+              "path": "max_cpu_used.value",
+              "gt": {
+               "value": 0.11
+              }
+             }
+           }
+          },
+     "actions": {
+       "log": {
+         "logging": {
+           "text": "CPU activity reported: Detailed message in cpu-usage index"
+          }
+       },
+       "index_payload": {
+         "transform": {
+           "script" : {
+             "inline" : "['items': ctx.payload.aggregations.host.buckets.collect(bucket -> ['count': (bucket.max_cpu_used.value*100), 'name': bucket.key, 'color': bucket.max_cpu_used.value > 0.11 ? 'danger' : 'good'])]",
+             "lang" : "painless"
+           }
+         },
+         "index": {
+           "index": "cpu-usage",
+           "doc_type": "cpu-log"
+         }
+       }
+    } 
+}
+

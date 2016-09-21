@@ -1,0 +1,38 @@
+---
+version: '2'
+services:
+  kibana:
+    image: container-registry.elastic.co/kibana/kibana:${KIBANA_VERSION}
+    ports:
+      - 5601:5601
+
+  elasticsearch:
+    image: container-registry.elastic.co/elasticsearch/elasticsearch:${KIBANA_VERSION}
+    ports:
+      - 9200:9200
+
+  metricbeat:
+    build: 
+      context: docker-metricbeat
+      args:
+        ELASTICSEARCH_VERSION: "${ELASTICSEARCH_VERSION}"
+    hostname: MySQL_Server_1
+    links:
+      - elasticsearch
+
+  load-data:
+    build: 
+      context: docker-metricbeat
+      args:
+        ELASTICSEARCH_VERSION: "${ELASTICSEARCH_VERSION}"
+    environment:
+      - HOST=elasticsearch
+      - USER=elastic
+      - PASS=changeme
+    links:
+      - elasticsearch
+    volumes:
+      - $PWD/scripts:/tmp/scripts
+    command: sh /tmp/scripts/wait-for-elastic.sh
+
+

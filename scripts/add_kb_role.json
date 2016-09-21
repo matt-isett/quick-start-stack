@@ -1,0 +1,23 @@
+{
+  "kibana-ui": {
+    "cluster": [],
+    "indices": [
+      {
+        "names": [
+          ".kibana*"
+        ],
+        "privileges": [
+          "manage",
+          "read",
+          "index",
+          "create"
+        ],
+        "fields": [
+          "*"
+        ]
+      }
+    ],
+    "run_as": [],
+    "metadata": {}
+  }
+}

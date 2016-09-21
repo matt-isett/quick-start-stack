@@ -1,0 +1,24 @@
+{
+    "run_as": [],
+    "cluster": [],
+    "indices": [
+      {
+        "names": [
+          "metricbeat-*"
+        ],
+        "privileges": [
+          "read",
+          "manage",
+          "index"
+        ],
+        "fields": [
+          "@timestamp",
+          "beat.name",
+          "metricset.name",
+          "system.memory.*",
+          "system.cpu.*"
+        ],
+        "query": "{\n\"terms\": {\"metricset.name\":  [\"memory\", \"cpu\"]  }\n}"
+      }
+    ]
+  }
