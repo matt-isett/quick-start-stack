@@ -1,6 +1,6 @@
 {
   "password" : "trustme", 
-  "roles" : [ "limit", "kibana-user" ], 
+  "roles" : [ "limit", "kibana_user" ], 
   "full_name" : "Tony Stark", 
   "email" : "tony@starkcorp.co", 
   "metadata" : { 
